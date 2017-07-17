@@ -5,9 +5,9 @@
     "polymer": "Polymer/polymer#^1.4.0",
     "paper-radio-button": "^1.4.0",
     "paper-radio-group": "^1.2.2",
-    "oe-i18n-msg": "http://github.com/EdgeVerve/oe-i18n-msg.git",
-    "oe-input-error": "http://github.com/EdgeVerve/oe-input-error.git",
-    "oe-field-behavior": "http://github.com/EdgeVerve/oe-field-behavior.git"
+    "oe-i18n-msg": "https://github.com/EdgeVerve/oe-i18n-msg.git",
+    "oe-input-error": "https://github.com/EdgeVerve/oe-input-error.git",
+    "oe-field-behavior": "https://github.com/EdgeVerve/oe-field-behavior.git"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
