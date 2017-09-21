@@ -21,11 +21,14 @@
   <link rel="import" href="utils.html">
 
   <link rel="import" href="../oe-radio-group.html">
+
+  
 </head>
 
 <body unresolved>
 
   <div class="vertical-section-container centered">
+        
     <h3>radio group</h3>
     <demo-snippet>
       <template>
@@ -58,13 +61,13 @@
           <span>{{currentSelection.code}}</span>-<span>{{currentSelection.description}}</span>
         </template>
 
-        <template is="dom-bind">
+      <template is="dom-bind">
           <oe-radio-group label="displayproperty=description" value={{currentSelection}} displayproperty="description" listdata='[{"code":"A","description":"Apples"},{"code":"O","description":"Oranges"}]'>
           </oe-radio-group>
           <span>{{currentSelection.code}}</span>-<span>{{currentSelection.description}}</span>
         </template>
 
-        <template is="dom-bind">
+      <template is="dom-bind">
           <oe-radio-group label="valueproperty=code" value={{currentSelection}} displayproperty="description" valueproperty="code"
             listdata='[{"code":"A","description":"Apples"},{"code":"O","description":"Oranges"}]'>
           </oe-radio-group>
@@ -74,6 +77,40 @@
       </template>
     </demo-snippet>
 
+    <h3>Styling Radio Button</h3>
+    <demo-snippet>
+      <template>
+        <template is="dom-bind">
+          
+          <style is="custom-style">
+            .xchanged {
+              --paper-radio-button-label-color: white;
+              --paper-radio-button-label: {
+                  background-color: grey;
+                  border-radius: 10px;
+                  padding: 5px;
+                }
+                --paper-radio-button-label-checked: {
+                  background-color: blue;
+                }
+                --paper-radio-button-radio-container: {
+                  display: none;
+                }
+            }
+          </style>
+
+          
+          <oe-radio-group class="xchanged" value="{{currentSelection}}" label="Make choice" class="layout-radio-button" listdata='["Apples","Oranges"]'>
+          </oe-radio-group>
+          <span>{{currentSelection}}</span>
+
+          <oe-radio-group class="xchanged" value="{{currentSelection}}" label="Disabled Radio Group" disabled class="layout-radio-button" listdata='["Apples","Oranges"]'>
+          </oe-radio-group>
+
+        </template>
+      </template>
+    </demo-snippet>
+    
   </div>
 
 </body>
