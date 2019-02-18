@@ -1,23 +1,20 @@
-<!-- 
-  ©2016-2017 EdgeVerve Systems Limited (a fully owned Infosys subsidiary),
-  Bangalore, India. All Rights Reserved.
--->
 <!doctype html>
-<html>
+<html lang="en">
 
 <head>
-
-  <title>oe-radio-group tests</title>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 
-  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-  <script src="../../web-component-tester/browser.js"></script>
-  <script src="../../iron-test-helpers/test-helpers.js"></script>
-  <script src="../../iron-test-helpers/mock-interactions.js"></script>
+  <title>oe-radio-group test</title>
 
-  <link rel="import" href="../oe-radio-group.html">
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/wct-mocha/wct-mocha.js"></script>
+
+
+  <script type="module" src="../oe-radio-group.js"></script>
 </head>
 
 <body>
@@ -58,7 +55,13 @@
   </test-fixture>
 
 
-  <script>
+  <script type="module">
+    import { DomApi } from "@polymer/polymer/lib/legacy/polymer.dom";
+    import '@polymer/iron-test-helpers/mock-interactions';
+    function getDom(node) {
+      return new DomApi(node);
+    }
+
     suite('Basic', function () {
 
       test('verify listdata contains values', function () {
@@ -82,14 +85,14 @@
 
       test('radio-group can have a preselected value', function () {
         var el = fixture('Preselected');
-        var rg = el.$.radiogroup;
+        var rg = el.inputElement;
         assert.equal(rg.selected, 'Oranges');
 
       });
 
       test('has-disabled on radio-group', function () {
         var el = fixture('has-disabled');
-        var rg = el.$.radiogroup;
+        var rg = el.inputElement;
         assert.equal(Boolean(rg.disabled), true);
 
       });
@@ -105,7 +108,7 @@
       test('arrow keys cause iron-activate events', function (done) {
         var el = fixture('Preselected');
 
-        Polymer.Base.async(function () {
+        flush(function () {
           el.focus();
           var i = 1;
           el.addEventListener('iron-activate', function () {
@@ -123,44 +126,46 @@
                 break;
             }
           });
-          MockInteractions.pressAndReleaseKeyOn(el, 37);
-        }, 1);
+          MockInteractions.pressAndReleaseKeyOn(el, 37);          
+        });
         done();
       });
 
 
       test('preselected value on object array set correctly', function () {
         var el = fixture('object-choices');
-        var rg = el.$.radiogroup;
+        var rg = el.inputElement;
         assert.equal(rg.selected, 1);
       });
 
       test('if valueproperty is not defined with object choices, the selection results full object as value',
         function (done) {
           var el = fixture('object-choices-object-value');
-          assert.deepEqual(el.listdata, [{
-            id: 1,
-            name: 'Apples'
-          }, {
-            id: 2,
-            name: 'Oranges'
-          }]);
-          el.focus();
-          var rg = el.$.radiogroup;
+          flush(function(){
+            assert.deepEqual(el.listdata, [{
+              id: 1,
+              name: 'Apples'
+            }, {
+              id: 2,
+              name: 'Oranges'
+            }]);
+            el.focus();
+            var rg = el.inputElement;
 
-          Polymer.Base.async(function () {
-            var allRadio = Polymer.dom(rg).querySelectorAll('paper-radio-button');
-            assert.equal(allRadio.length, 2);
-            assert.isUndefined(el.value);
+            flush(function () {
+              var allRadio = getDom(rg).querySelectorAll('paper-radio-button');
+              assert.equal(allRadio.length, 2);
+              assert.isUndefined(el.value);
 
-            MockInteractions.downAndUp(allRadio[0],
-              function () {
-                assert.deepEqual(el.value, {
-                  id: 1,
-                  name: 'Apples'
+              MockInteractions.downAndUp(allRadio[0],
+                function () {
+                  assert.deepEqual(el.value, {
+                    id: 1,
+                    name: 'Apples'
+                  });
+                  done();
                 });
-                done();
-              });
+            });
           });
         });
 
