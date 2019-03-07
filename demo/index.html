@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>oe-radio-group demo</title>
+
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+
+  <script type="module">
+    import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
+    import '@polymer/iron-demo-helpers/demo-snippet';
+    import '@polymer/polymer/lib/elements/dom-bind.js';
+    import '@polymer/polymer/lib/elements/custom-style.js';
+  </script>
+
+  <script src="./utils.js"></script>
+  <script type="module" src="../oe-radio-group.js"></script>
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      body {
+        padding: 0;
+      }
+
+      demo-snippet.horizontal {
+        --demo-snippet-demo: {
+          @apply (--layout-horizontal);
+          @apply (--layout-justified);
+          @apply (--layout-wrap);
+        }
+      }
+
+      demo-snippet.horizontal paper-input {
+        display: inline-block;
+      }
+
+      button {
+        width: 70px;
+      }
+
+      #inputForValidation {
+        display: inline-block;
+        width: calc(100% - 75px);
+      }
+
+      .vertical-section-container {
+        max-width: 600px;
+      }
+
+      paper-icon-button {
+        color: var(--paper-red-300);
+        width: 23px;
+        height: 23px;
+        padding: 0 4px;
+
+        --paper-icon-button-ink-color: var(--paper-red-a100);
+      }
+
+      paper-item {
+        cursor: pointer;
+      }
+
+      iron-icon {
+        padding-right: 5px;
+      }
+
+      .layout-2-1>* {
+        width: calc(50% - 16px);
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      .layout-3-2-1>* {
+        width: calc(33.33% - 16px);
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      @media only screen and (max-width: 840px) and (min-width: 600px) {
+        .layout-3-2-1>* {
+          width: calc(50% - 16px);
+        }
+      }
+
+      @media (max-width: 600px) {
+        .layout-2-1>* {
+          width: calc(100% - 16px);
+        }
+
+        .layout-3-2-1>* {
+          width: calc(100% - 16px);
+        }
+      }
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>Radio group</h3>
+    <demo-snippet>
+      <template>
+        <dom-bind>
+          <template>
+            <oe-radio-group value="{{currentSelection}}" label="Make choice" class="layout-radio-button" listdata='["Apples","Oranges"]'>
+            </oe-radio-group>
+            <span>{{currentSelection}}</span>
+            <oe-radio-group value="{{currentSelection}}" label="Disabled Radio Group" disabled class="layout-radio-button" listdata='["Apples","Oranges"]'>
+            </oe-radio-group>
+          </template>
+        </dom-bind>
+      </template>
+    </demo-snippet>
+
+    <h3>Preset value</h3>
+    <demo-snippet>
+      <template>
+        <oe-radio-group value="Oranges" label="Pre selected" class="layout-radio-button" listdata='["Apples","Oranges"]'>
+        </oe-radio-group>
+      </template>
+    </demo-snippet>
+
+    <h3>[Object] as listdata</h3>
+    <demo-snippet>
+      <template>
+        <dom-bind>
+          <template>
+            <oe-radio-group value={{currentSelection}} listdata='[{"code":"A","description":"Apples"},{"code":"O","description":"Oranges"}]'>
+            </oe-radio-group>
+            <span>{{currentSelection.code}}</span>-
+            <span>{{currentSelection.description}}</span>
+          </template>
+        </dom-bind>
+
+        <dom-bind>
+          <template>
+            <oe-radio-group label="displayproperty=description" value={{currentSelection}} displayproperty="description" listdata='[{"code":"A","description":"Apples"},{"code":"O","description":"Oranges"}]'>
+            </oe-radio-group>
+            <span>{{currentSelection.code}}</span>-
+            <span>{{currentSelection.description}}</span>
+          </template>
+        </dom-bind>
+
+        <dom-bind>
+          <template>
+            <oe-radio-group label="valueproperty=code" value={{currentSelection}} displayproperty="description" valueproperty="code"
+              listdata='[{"code":"A","description":"Apples"},{"code":"O","description":"Oranges"}]'>
+            </oe-radio-group>
+            <span>{{currentSelection}}</span>
+          </template>
+        </dom-bind>
+
+      </template>
+    </demo-snippet>
+
+    <h3>Styling Radio Button</h3>
+    <demo-snippet>
+      <template>
+        <dom-bind>
+          <template>
+            <custom-style>
+              <style>
+                .xchanged {
+                  --paper-radio-button-label-color: white;
+                  --paper-radio-button-label: {
+                    background-color: grey;
+                    border-radius: 10px;
+                    padding: 5px;
+                  }
+                  --paper-radio-button-label-checked: {
+                    background-color: blue;
+                  }
+                  --paper-radio-button-radio-container: {
+                    display: none;
+                  }
+                }
+              </style>
+            </custom-style>
+
+            <oe-radio-group class="xchanged" value="{{currentSelection}}" label="Make choice" class="layout-radio-button" listdata='["Apples","Oranges"]'>
+            </oe-radio-group>
+            <span>{{currentSelection}}</span>
+
+            <oe-radio-group class="xchanged" value="{{currentSelection}}" label="Disabled Radio Group" disabled class="layout-radio-button"
+              listdata='["Apples","Oranges"]'>
+            </oe-radio-group>
+          </template>
+        </dom-bind>
+      </template>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>
