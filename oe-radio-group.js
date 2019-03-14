@@ -9,6 +9,7 @@ import "@polymer/paper-radio-button/paper-radio-button.js";
 import "@polymer/paper-input/paper-input-container.js";
 import "@polymer/paper-input/paper-input-error.js";
 import '@polymer/polymer/lib/elements/dom-repeat.js';
+import "oe-i18n-msg/oe-i18n-msg";
 import { OEFieldMixin } from "oe-mixins/oe-field-mixin.js";
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { PaperInputBehavior } from '@polymer/paper-input/paper-input-behavior';
@@ -52,7 +53,7 @@ class OeRadioGroup extends mixinBehaviors([IronFormElementBehavior, PaperInputBe
 
         </style>
 
-        <paper-input-container always-float-label attr-for-value="selected">
+        <paper-input-container always-float-label attr-for-value="selected" invalid={{invalid}} auto-validate={{autoValidate}}>
           <label slot="label" hidden$="[[!label]]">
               <oe-i18n-msg msgid=[[label]]>[[label]]</oe-i18n-msg>
               <template is="dom-if" if={{required}}><span class="required"> *</span></template>
@@ -118,10 +119,11 @@ class OeRadioGroup extends mixinBehaviors([IronFormElementBehavior, PaperInputBe
   _validate() {
     if (this.required && this.value === undefined) {
       this.setValidity(false, 'valueMissing');
+      return false;
     } else {
       this.setValidity(true, undefined);
+      return true;
     }
-    return true;
   }
 
   _getValue(choice) {
