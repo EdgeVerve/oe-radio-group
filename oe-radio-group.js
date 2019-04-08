@@ -10,6 +10,7 @@ import "@polymer/paper-input/paper-input-container.js";
 import "@polymer/paper-input/paper-input-error.js";
 import '@polymer/polymer/lib/elements/dom-repeat.js';
 import "oe-i18n-msg/oe-i18n-msg";
+import { IronControlState } from '@polymer/iron-behaviors/iron-control-state.js';
 import { OEFieldMixin } from "oe-mixins/oe-field-mixin.js";
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { PaperInputBehavior } from '@polymer/paper-input/paper-input-behavior';
@@ -142,6 +143,20 @@ class OeRadioGroup extends mixinBehaviors([IronFormElementBehavior, PaperInputBe
     return ret;
   }
 
+  /**
+   * Overriding paper-input behavior
+   * @param {focusBlurEvent} event 
+   */
+  _focusBlurHandler(event) {
+    IronControlState._focusBlurHandler.call(this, event);
+
+    // Forward the focus to the nested input.
+    if (this.focused && !this._shiftTabPressed && this._focusableElement) {
+      if (document.activeElement !== this || !this._focusableElement.contains(this.shadowRoot.activeElement)) {
+        this._focusableElement.focus();
+      }
+    }
+  }
 }
 
 window.customElements.define(OeRadioGroup.is, OEFieldMixin(OeRadioGroup));
