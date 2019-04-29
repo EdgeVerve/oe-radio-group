@@ -152,10 +152,28 @@ class OeRadioGroup extends mixinBehaviors([IronFormElementBehavior, PaperInputBe
 
     // Forward the focus to the nested input.
     if (this.focused && !this._shiftTabPressed && this._focusableElement) {
-      if (document.activeElement !== this || !this._focusableElement.contains(this.shadowRoot.activeElement)) {
+      var paths = event.path || (event.composedPath && event.composedPath()) || this._getComposedEventPath(event);
+      var isChild = this._focusableElement.contains(paths[0])
+      if (!isChild) {
         this._focusableElement.focus();
       }
     }
+  }
+
+  _getComposedEventPath(event){
+    var paths = [];
+    var cur = event.srcElement;
+    paths.push(cur);
+    while(cur && cur !== document){
+      var parent = cur.parentElement;
+      if (parent) {
+        cur = parent;
+      } else {
+        cur = cur.getRootNode().host;
+      }
+      paths.push(cur);
+    }
+    return paths;
   }
 }
 
