@@ -44,14 +44,14 @@
     </style>
 
     <paper-input-container always-float-label attr-for-value="selected">
-      <label hidden$="[[!label]]">
+      <label hidden$="[[!label]]" aria-hidden>
           <oe-i18n-msg msgid=[[label]]>[[label]]</oe-i18n-msg>
-          <template is="dom-if" if={{required}}><span class="required"> *</span></template>
+          <template is="dom-if" if={{required}}><span class="required" aria-hidden> *</span></template>
       </label>
 
-      <paper-radio-group class="paper-input-input" id="radiogroup" disabled=[[disabled]] selected="{{value}}" attr-for-selected="x">
+      <paper-radio-group class="paper-input-input" aria-required$="[[required]]" aria-label$="[[label]]" id="radiogroup" disabled=[[disabled]] selected="{{value}}" attr-for-selected="x">
         <template is="dom-repeat" items={{listdata}}>
-          <paper-radio-button x="[[_getValue(item)]]" disabled=[[disabled]]>
+          <paper-radio-button x="[[_getValue(item)]]" disabled=[[disabled]] aria-label$="[[_getDisplay(item)]]">
             <oe-i18n-msg msgid=[[_getDisplay(item)]]>[[_getDisplay(item)]]</oe-i18n-msg>
           </paper-radio-button>
         </template>
@@ -108,7 +108,8 @@
        * Disabled
        */
       disabled: {
-        type: Boolean
+        type: Boolean,
+        value:false
       },
 
       required: {
