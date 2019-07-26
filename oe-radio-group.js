@@ -55,14 +55,16 @@ class OeRadioGroup extends mixinBehaviors([IronFormElementBehavior, PaperInputBe
         </style>
 
         <paper-input-container always-float-label attr-for-value="selected" invalid={{invalid}} auto-validate={{autoValidate}}>
-          <label slot="label" hidden$="[[!label]]">
+          <label id="label" slot="label" hidden$="[[!label]]">
               <oe-i18n-msg msgid=[[label]]>[[label]]</oe-i18n-msg>
               <template is="dom-if" if={{required}}><span class="required"> *</span></template>
           </label>
 
-          <paper-radio-group slot="input" class="paper-input-input" id="[[_inputId]]" disabled=[[disabled]] selected="{{value}}" attr-for-selected="x">
+          <paper-radio-group slot="input" 
+          aria-labelledby="label" role="radiogroup"
+          class="paper-input-input" id="[[_inputId]]" disabled=[[disabled]] selected="{{value}}" attr-for-selected="x">
             <template is="dom-repeat" items={{listdata}}>
-                <paper-radio-button x="[[_getValue(item)]]" disabled=[[disabled]]>
+                <paper-radio-button x="[[_getValue(item)]]" disabled=[[disabled]] role="radio">
                   <oe-i18n-msg msgid=[[_getDisplay(item)]]>[[_getDisplay(item)]]</oe-i18n-msg>
                 </paper-radio-button>
               </template>
@@ -153,18 +155,18 @@ class OeRadioGroup extends mixinBehaviors([IronFormElementBehavior, PaperInputBe
     // Forward the focus to the nested input.
     if (this.focused && !this._shiftTabPressed && this._focusableElement) {
       var paths = event.path || (event.composedPath && event.composedPath()) || this._getComposedEventPath(event);
-      var isChild = this._focusableElement.contains(paths[0])
+      var isChild = this._focusableElement.contains(paths[0]);
       if (!isChild) {
         this._focusableElement.focus();
       }
     }
   }
 
-  _getComposedEventPath(event){
+  _getComposedEventPath(event) {
     var paths = [];
     var cur = event.srcElement;
     paths.push(cur);
-    while(cur && cur !== document){
+    while (cur && cur !== document) {
       var parent = cur.parentElement;
       if (parent) {
         cur = parent;
