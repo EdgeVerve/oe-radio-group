@@ -2,24 +2,29 @@
   "name": "oe-radio-group",
   "description": "A wrapper over `paper-radio-group` that auto-generates the underlying `paper-radio-button`s based on `choices` provided",
   "main": "oe-radio-group.js",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "dependencies": {
-    "@polymer/paper-input": "3.0.1",
-    "@polymer/paper-radio-group": "3.0.1",
-    "@polymer/polymer": "3.1.0",
+    "@polymer/paper-input": "^3.0.1",
+    "@polymer/paper-radio-group": "^3.0.1",
+    "@polymer/polymer": "^3.1.0",
     "oe-i18n-msg": "git+http://evgit/oecloud.io/oe-i18n-msg.git#master",
     "oe-mixins": "git+http://evgit/oecloud.io/oe-mixins.git#master"
   },
   "devDependencies": {
-    "@polymer/iron-demo-helpers": "3.0.2",
-    "@webcomponents/webcomponentsjs": "2.2.7",
-    "@polymer/iron-test-helpers": "3.0.1",
-    "@polymer/iron-component-page": "4.0.1",
-    "@polymer/test-fixture": "4.0.2",
+    "@polymer/iron-demo-helpers": "^3.0.2",
+    "@webcomponents/webcomponentsjs": "^2.2.7",
+    "@polymer/iron-test-helpers": "^3.0.1",
+    "@polymer/iron-component-page": "^4.0.1",
+    "@polymer/test-fixture": "^4.0.2",
     "axe-core": "3.1.2",
     "chai": "4.2.0",
     "mocha": "5.2.0",
     "sinon": "7.2.3",
     "wct-mocha": "1.0.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EdgeVerve/oe-radio-group.git"
   }
 }
