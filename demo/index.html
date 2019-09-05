@@ -25,6 +25,20 @@
         padding: 0;
       }
 
+      .custom-class-radio {
+        --paper-radio-button-ink-size: 25px;
+        padding: 0px 10px;
+        --paper-input-container: {
+          padding: 0px;
+        }
+        --paper-font-caption: {
+          line-height: 15px;
+        }
+        --oe-radio-item: {
+          font-size: 15px;
+        }
+      }
+
       demo-snippet.horizontal {
         --demo-snippet-demo: {
           @apply (--layout-horizontal);
@@ -189,6 +203,16 @@
             </oe-radio-group>
           </template>
         </dom-bind>
+      </template>
+    </demo-snippet>
+    <h3>oe-radio-group with custom-css</h3>
+    <demo-snippet>
+      <template>
+        <oe-radio-group label="Custom-css applied" class=" custom-class-radio layout-radio-button" listdata='["Apples","Oranges"]'>
+        </oe-radio-group>
+        <oe-radio-group label="displayproperty=description" class=" custom-class-radio" value={{currentSelection}} displayproperty="description"
+          listdata='[{"code":"B","description":"Bangalore"},{"code":"P","description":"Pune"}]'>
+        </oe-radio-group>
       </template>
     </demo-snippet>
   </div>
