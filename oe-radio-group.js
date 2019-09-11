@@ -67,7 +67,9 @@ class OeRadioGroup extends mixinBehaviors([IronFormElementBehavior, PaperInputBe
             color: var(--paper-input-container-invalid-color, --paper-deep-orange-a700);
             @apply --oe-required-mixin;
           }
-
+          .item {
+            @apply --oe-radio-item;
+          }
         </style>
 
         <paper-input-container always-float-label attr-for-value="selected" invalid={{invalid}} auto-validate={{autoValidate}}>
@@ -81,7 +83,7 @@ class OeRadioGroup extends mixinBehaviors([IronFormElementBehavior, PaperInputBe
           class="paper-input-input" id="[[_inputId]]" disabled=[[disabled]] selected="{{value}}" attr-for-selected="x">
             <template is="dom-repeat" items={{listdata}}>
                 <paper-radio-button x="[[_getValue(item)]]" disabled=[[disabled]] role="radio">
-                  <oe-i18n-msg msgid=[[_getDisplay(item)]]></oe-i18n-msg>
+                  <oe-i18n-msg class="item" msgid=[[_getDisplay(item)]]></oe-i18n-msg>
                 </paper-radio-button>
               </template>
           </paper-radio-group>
