@@ -9,6 +9,8 @@ import "@polymer/paper-radio-button/paper-radio-button.js";
 import "@polymer/paper-input/paper-input-container.js";
 import "@polymer/paper-input/paper-input-error.js";
 import '@polymer/polymer/lib/elements/dom-repeat.js';
+import "oe-i18n-msg/oe-i18n-msg";
+import { IronControlState } from '@polymer/iron-behaviors/iron-control-state.js';
 import { OEFieldMixin } from "oe-mixins/oe-field-mixin.js";
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { PaperInputBehavior } from '@polymer/paper-input/paper-input-behavior';
@@ -52,7 +54,7 @@ class OeRadioGroup extends mixinBehaviors([IronFormElementBehavior, PaperInputBe
 
         </style>
 
-        <paper-input-container always-float-label attr-for-value="selected">
+        <paper-input-container always-float-label attr-for-value="selected" invalid={{invalid}} auto-validate={{autoValidate}}>
           <label slot="label" hidden$="[[!label]]">
               <oe-i18n-msg msgid=[[label]]>[[label]]</oe-i18n-msg>
               <template is="dom-if" if={{required}}><span class="required"> *</span></template>
@@ -118,10 +120,11 @@ class OeRadioGroup extends mixinBehaviors([IronFormElementBehavior, PaperInputBe
   _validate() {
     if (this.required && this.value === undefined) {
       this.setValidity(false, 'valueMissing');
+      return false;
     } else {
       this.setValidity(true, undefined);
+      return true;
     }
-    return true;
   }
 
   _getValue(choice) {
@@ -140,6 +143,38 @@ class OeRadioGroup extends mixinBehaviors([IronFormElementBehavior, PaperInputBe
     return ret;
   }
 
+  /**
+   * Overriding paper-input behavior
+   * @param {focusBlurEvent} event 
+   */
+  _focusBlurHandler(event) {
+    IronControlState._focusBlurHandler.call(this, event);
+
+    // Forward the focus to the nested input.
+    if (this.focused && !this._shiftTabPressed && this._focusableElement) {
+      var paths = event.path || (event.composedPath && event.composedPath()) || this._getComposedEventPath(event);
+      var isChild = this._focusableElement.contains(paths[0])
+      if (!isChild) {
+        this._focusableElement.focus();
+      }
+    }
+  }
+
+  _getComposedEventPath(event){
+    var paths = [];
+    var cur = event.srcElement;
+    paths.push(cur);
+    while(cur && cur !== document){
+      var parent = cur.parentElement;
+      if (parent) {
+        cur = parent;
+      } else {
+        cur = cur.getRootNode().host;
+      }
+      paths.push(cur);
+    }
+    return paths;
+  }
 }
 
 window.customElements.define(OeRadioGroup.is, OEFieldMixin(OeRadioGroup));
