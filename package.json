@@ -2,7 +2,7 @@
   "name": "oe-radio-group",
   "description": "A wrapper over `paper-radio-group` that auto-generates the underlying `paper-radio-button`s based on `choices` provided",
   "main": "oe-radio-group.js",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "dependencies": {
     "@polymer/paper-input": "^3.0.1",
     "@polymer/paper-radio-group": "^3.0.1",

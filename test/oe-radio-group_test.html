@@ -172,6 +172,71 @@
 
     });
 
+    suite('Change Events', function(){
+
+      test('Change event is raised when selection changes', function (done) {
+        var el = fixture('object-choices-object-value');
+        el.set('fieldId', 'myfield');
+        el.addEventListener('oe-field-changed', function(evt){
+          expect(evt.detail).to.deep.equal({fieldId: 'myfield', value: {
+                    id: 1,
+                    name: 'Apples'
+                  }});
+
+          expect(el.value).to.deep.equal({
+                id: 1,
+                name: 'Apples'
+              });
+          done();
+        });
+
+        flush(function(){
+          el.focus();
+          var rg = el.inputElement;
+          var allRadio = getDom(rg).querySelectorAll('paper-radio-button');
+          assert.equal(allRadio.length, 2);
+          assert.isUndefined(el.value);
+          MockInteractions.tap(allRadio[0]);
+        })
+      });
+
+      test('Change event is NOT raised when fieldId is not present', function (done) {
+        var el = fixture('object-choices-object-value');
+        el.addEventListener('oe-field-changed', function(evt){
+          expect(false).to.equal(true);
+          done();
+        });
+        flush(function(){
+          el.focus();
+          var rg = el.inputElement;
+          var allRadio = getDom(rg).querySelectorAll('paper-radio-button');
+          assert.equal(allRadio.length, 2);
+          assert.isUndefined(el.value);
+          MockInteractions.tap(allRadio[0]);
+          setTimeout(done, 2000);
+        })
+      });
+
+      test('Change event is NOT raised when underlying value is updated', function (done) {
+        var el = fixture('object-choices-object-value');
+        el.set('fieldId', 'myfield');
+
+        el.addEventListener('oe-field-changed', function(evt){
+          expect(false).to.equal(true);
+          done();
+        });
+
+        el.addEventListener('oe-field-ok', function(evt){
+          setTimeout(done, 2000);
+        });
+
+        el.set('value', {
+                id: 1,
+                name: 'Apples'
+        });
+      });
+
+    });
   </script>
 
 </body>

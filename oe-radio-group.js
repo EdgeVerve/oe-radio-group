@@ -3,18 +3,31 @@
  * ©2018-2019 EdgeVerve Systems Limited (a fully owned Infosys subsidiary),
  * Bangalore, India. All Rights Reserved.
  */
-import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
+import {
+  html,
+  PolymerElement
+} from '@polymer/polymer/polymer-element.js';
 import "@polymer/paper-radio-group/paper-radio-group.js";
 import "@polymer/paper-radio-button/paper-radio-button.js";
 import "@polymer/paper-input/paper-input-container.js";
 import "@polymer/paper-input/paper-input-error.js";
 import '@polymer/polymer/lib/elements/dom-repeat.js';
 import "oe-i18n-msg/oe-i18n-msg";
-import { IronControlState } from '@polymer/iron-behaviors/iron-control-state.js';
-import { OEFieldMixin } from "oe-mixins/oe-field-mixin.js";
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import { PaperInputBehavior } from '@polymer/paper-input/paper-input-behavior';
-import { IronFormElementBehavior } from '@polymer/iron-form-element-behavior/iron-form-element-behavior';
+import {
+  IronControlState
+} from '@polymer/iron-behaviors/iron-control-state.js';
+import {
+  OEFieldMixin
+} from "oe-mixins/oe-field-mixin.js";
+import {
+  mixinBehaviors
+} from '@polymer/polymer/lib/legacy/class.js';
+import {
+  PaperInputBehavior
+} from '@polymer/paper-input/paper-input-behavior';
+import {
+  IronFormElementBehavior
+} from '@polymer/iron-form-element-behavior/iron-form-element-behavior';
 
 /**
  * #oe-radio-group
@@ -26,9 +39,11 @@ import { IronFormElementBehavior } from '@polymer/iron-form-element-behavior/iro
  * @demo demo/index.html
  */
 class OeRadioGroup extends mixinBehaviors([IronFormElementBehavior, PaperInputBehavior], PolymerElement) {
-  static get is() { return "oe-radio-group"; }
+  static get is() {
+    return "oe-radio-group";
+  }
   static get template() {
-    return html`
+    return html `
         <style>
           :host {
             display: block;
@@ -50,20 +65,25 @@ class OeRadioGroup extends mixinBehaviors([IronFormElementBehavior, PaperInputBe
 
           span.required {
             color: var(--paper-input-container-invalid-color, --paper-deep-orange-a700);
+            @apply --oe-required-mixin;
           }
-
+          .item {
+            @apply --oe-radio-item;
+          }
         </style>
 
         <paper-input-container always-float-label attr-for-value="selected" invalid={{invalid}} auto-validate={{autoValidate}}>
-          <label slot="label" hidden$="[[!label]]">
+          <label id="label" slot="label" hidden$="[[!label]]">
               <oe-i18n-msg msgid=[[label]]>[[label]]</oe-i18n-msg>
               <template is="dom-if" if={{required}}><span class="required"> *</span></template>
           </label>
 
-          <paper-radio-group slot="input" class="paper-input-input" id="[[_inputId]]" disabled=[[disabled]] selected="{{value}}" attr-for-selected="x">
+          <paper-radio-group slot="input"
+          aria-labelledby="label" role="radiogroup"
+          class="paper-input-input" id="[[_inputId]]" disabled=[[disabled]] selected="{{value}}" attr-for-selected="x">
             <template is="dom-repeat" items={{listdata}}>
-                <paper-radio-button x="[[_getValue(item)]]" disabled=[[disabled]]>
-                  <oe-i18n-msg msgid=[[_getDisplay(item)]]>[[_getDisplay(item)]]</oe-i18n-msg>
+                <paper-radio-button x="[[_getValue(item)]]" disabled=[[disabled]] role="radio">
+                  <oe-i18n-msg class="item" msgid=[[_getDisplay(item)]]></oe-i18n-msg>
                 </paper-radio-button>
               </template>
           </paper-radio-group>
@@ -81,7 +101,8 @@ class OeRadioGroup extends mixinBehaviors([IronFormElementBehavior, PaperInputBe
        */
       value: {
         type: Object,
-        notify: true
+        notify: true,
+        observer: '_valueChanged'
       },
 
       /**
@@ -114,7 +135,23 @@ class OeRadioGroup extends mixinBehaviors([IronFormElementBehavior, PaperInputBe
 
   constructor() {
     super();
-    this.addEventListener('paper-radio-group-changed', this.validate.bind(this));
+    this.addEventListener('paper-radio-group-changed', this._selectionChanged.bind(this));
+  }
+
+  _selectionChanged(evt) {
+    if (this.fieldId) {
+      this.fire('oe-field-changed', {
+        fieldId: this.fieldId,
+        value: this.value
+      });
+    }
+  }
+
+    /**
+   * observer for 'value' property
+   */
+  _valueChanged(nval, oval) {
+    this._validate();
   }
 
   _validate() {
@@ -153,18 +190,18 @@ class OeRadioGroup extends mixinBehaviors([IronFormElementBehavior, PaperInputBe
     // Forward the focus to the nested input.
     if (this.focused && !this._shiftTabPressed && this._focusableElement) {
       var paths = event.path || (event.composedPath && event.composedPath()) || this._getComposedEventPath(event);
-      var isChild = this._focusableElement.contains(paths[0])
+      var isChild = this._focusableElement.contains(paths[0]);
       if (!isChild) {
         this._focusableElement.focus();
       }
     }
   }
 
-  _getComposedEventPath(event){
+  _getComposedEventPath(event) {
     var paths = [];
     var cur = event.srcElement;
     paths.push(cur);
-    while(cur && cur !== document){
+    while (cur && cur !== document) {
       var parent = cur.parentElement;
       if (parent) {
         cur = parent;
